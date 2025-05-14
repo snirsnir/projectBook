@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המצאפדיה - ספר פרויקט</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rubik', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: #3498db;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            font-size: 1.2rem;
+            color: #555;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            border-right: 5px solid #3498db;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+        
+        textarea {
+            min-height: 120px;
+        }
+        
+        .image-upload {
+            border: 2px dashed #3498db;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .image-upload img {
+            max-width: 100%;
+            max-height: 300px;
+            display: none;
+            margin: 10px auto;
+        }
+        
+        .image-text {
+            margin: 10px 0;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 30px auto;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .project-details {
+            margin-bottom: 20px;
+        }
+        
+        .project-details input {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        /* לשימוש בהדפסה */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 10px;
+            }
+            
+            .no-print {
+                display: none;
+            }
+            
+            button {
+                display: none;
+            }
+            
+            .form-section {
+                break-inside: avoid;
+                border: 1px solid #ddd;
+                margin-bottom: 20px;
+            }
+            
+            textarea, input[type="text"] {
+                border: none;
+                padding: 0;
+                background: none;
+            }
+            
+            .image-upload {
+                border: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>המצאפדיה</h1>
+            <div class="header-subtitle">ספר פרויקט - האקתון הממציא הצעיר</div>
+        </header>
+
+        <div class="project-details">
+            <label for="projectName">שם ההמצאה:</label>
+            <input type="text" id="projectName" placeholder="הזן את שם ההמצאה שלך">
+            
+            <label for="teamMembers">שמות החברים בקבוצה:</label>
+            <input type="text" id="teamMembers" placeholder="רשום את שמות החברים בקבוצה">
+        </div>
+
+        <div class="form-section">
+            <h2>תכנון ראשוני</h2>
+            <textarea id="planning" placeholder="איך ההמצאה אמורה לעבוד? תאר את העיקרון הפעולה והמנגנון של ההמצאה"></textarea>
+        </div>
+
+        <div class="form-section">
+            <h2>מה ההמצאה עושה?</h2>
+            <textarea id="functionality" placeholder="מה היא עושה ואיך היא עוזרת למשתמשים? אילו בעיות היא פותרת?"></textarea>
+        </div>
+
+        <div class="form-section">
+            <h2>ממה היא בנויה</h2>
+            <textarea id="materials" placeholder="פירוט של החלקים והחומרים שמרכיבים את ההמצאה"></textarea>
+        </div>
+
+        <div class="form-section">
+            <h2>איך הגעתי לרעיון</h2>
+            <textarea id="inspiration" placeholder="איזה צורך זיהיתם? מה גרם לכם לחשוב על הרעיון הזה?"></textarea>
+        </div>
+
+        <div class="form-section">
+            <h2>איך זה נראה</h2>
+            <div class="image-upload" id="imageUploadArea">
+                <div class="no-print">
+                    <p>לחץ כאן להעלאת תמונה, ציור או תרשים של ההמצאה</p>
+                    <p class="image-text">(אפשר גם לגרור קובץ לכאן)</p>
+                </div>
+                <img id="uploadedImage" src="" alt="תמונת ההמצאה">
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>מה מיוחד בהמצאה</h2>
+            <textarea id="uniqueness" placeholder="מה חדשני, מקורי או מפתיע בהמצאה שלכם? במה היא שונה מפתרונות קיימים?"></textarea>
+        </div>
+
+        <div class="form-section">
+            <h2>מחשבות לעתיד</h2>
+            <textarea id="future" placeholder="איך אפשר לשפר או לשדרג את ההמצאה בעתיד? אילו רעיונות יש לכם להמשך פיתוח?"></textarea>
+        </div>
+
+        <button id="printBtn" onclick="printProject()">הדפס את ספר הפרויקט</button>
+    </div>
+
+    <script>
+        // פונקציה להתחברות להעלאת תמונה
+        const imageUploadArea = document.getElementById('imageUploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const uploadedImage = document.getElementById('uploadedImage');
+
+        imageUploadArea.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    uploadedImage.src = event.target.result;
+                    uploadedImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // תמיכה בגרירת קבצים
+        imageUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.borderColor = '#2ecc71';
+        });
+
+        imageUploadArea.addEventListener('dragleave', () => {
+            imageUploadArea.style.borderColor = '#3498db';
+        });
+
+        imageUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.borderColor = '#3498db';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    uploadedImage.src = event.target.result;
+                    uploadedImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // שמירת המידע בזיכרון המקומי
+        function saveData() {
+            const data = {
+                projectName: document.getElementById('projectName').value,
+                teamMembers: document.getElementById('teamMembers').value,
+                planning: document.getElementById('planning').value,
+                functionality: document.getElementById('functionality').value,
+                materials: document.getElementById('materials').value,
+                inspiration: document.getElementById('inspiration').value,
+                image: uploadedImage.src,
+                uniqueness: document.getElementById('uniqueness').value,
+                future: document.getElementById('future').value
+            };
+            
+            localStorage.setItem('hamtzapediaData', JSON.stringify(data));
+        }
+
+        // טעינת מידע מהזיכרון המקומי
+        function loadData() {
+            const savedData = localStorage.getItem('hamtzapediaData');
+            
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                document.getElementById('projectName').value = data.projectName || '';
+                document.getElementById('teamMembers').value = data.teamMembers || '';
+                document.getElementById('planning').value = data.planning || '';
+                document.getElementById('functionality').value = data.functionality || '';
+                document.getElementById('materials').value = data.materials || '';
+                document.getElementById('inspiration').value = data.inspiration || '';
+                document.getElementById('uniqueness').value = data.uniqueness || '';
+                document.getElementById('future').value = data.future || '';
+                
+                if (data.image) {
+                    uploadedImage.src = data.image;
+                    uploadedImage.style.display = 'block';
+                }
+            }
+        }
+
+        // שמירת הנתונים בכל שינוי
+        const allInputs = document.querySelectorAll('input, textarea');
+        allInputs.forEach(input => {
+            input.addEventListener('input', saveData);
+        });
+
+        // פונקציה להדפסה
+        function printProject() {
+            window.print();
+        }
+
+        // טעינת מידע בעת טעינת הדף
+        window.addEventListener('load', loadData);
+    </script>
+</body>
+</html>
