@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בנק הפרזנטציות - כנף למזגן</title>
+    <style>
+        :root {
+            --primary-color: #14c42c;
+            --secondary-color: #03460c;
+            --accent-color: #0314039a;
+            --text-color: #333;
+            --bg-color: #f0f8ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .ad-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, #187402 0%, transparent 60%);
+            z-index: -2;
+            opacity: 0.3;
+        }
+        
+        .wave {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(0deg, var(--primary-color) 0%, transparent 100%);
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(184, 255, 190, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .content-box {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        label {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        input[type="text"], select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .file-input-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .file-input-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed var(--accent-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-box:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(65, 105, 225, 0.05);
+        }
+        
+        .file-input-box i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .file-input-box p {
+            margin: 0.5rem 0;
+        }
+        
+        .file-name {
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        
+        input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .success-message h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .success-message .icon {
+            font-size: 4rem;
+            color: green;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message p {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .file-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .file-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .file-card-header {
+            background-color: var(--accent-color);
+            padding: 0.8rem;
+            text-align: center;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .file-card-body {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .file-card-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .file-card-title {
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+            word-break: break-word;
+        }
+        
+        .file-card-type {
+            margin-top: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .loader {
+            display: none;
+            width: 48px;
+            height: 48px;
+            border: 5px solid var(--accent-color);
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            animation: rotation 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        #progressBar {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-top: 1rem;
+            overflow: hidden;
+            display: none;
+        }
+        
+        #progressFill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .modal-header {
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            transform: scale(1.2);
+        }
+        
+        .modal-body {
+            padding: 1rem;
+            overflow: auto;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .preview-video {
+            max-width: 100%;
+            max-height: 60vh;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .sparkles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .sparkle {
+            position: absolute;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            animation: float 4s infinite ease-in-out;
+            opacity: 0;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content-box {
+                padding: 1.5rem;
+            }
+            
+            .file-library {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                max-height: 90%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="ad-bg"></div>
+    <div class="wave"></div>
+    <div class="sparkles" id="sparkles"></div>
+    
+    <div class="container">
+        <header>
+            <h1>בנק הפרזנטציות - כנף למזגן</h1>
+            <p class="subtitle">הסריטו את עצמכם מסבירים על ההמצאה והעלו לבנק הפרזנטציות</p>
+        </header>
+        
+        <div id="uploadSection" class="content-box">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="groupName">שם הקבוצה:</label>
+                    <input type="text" id="groupName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>העלאת סרטון:</label>
+                    <div class="file-input-container">
+                        <div class="file-input-box" id="fileInputBox">
+                            <i class="fas fa-video"></i>
+                            <p>גרור לכאן את הסרטון או לחץ לבחירת קובץ</p>
+                            <p class="small">(קבצי וידאו בלבד)</p>
+                            <input type="file" id="adFile" accept="video/*" required>
+                        </div>
+                        <p class="file-name" id="fileName"></p>
+                    </div>
+                </div>
+                
+                <div id="progressBar">
+                    <div id="progressFill"></div>
+                </div>
+                
+                <button class="btn" id="submitBtn" disabled>העלה סרטון</button>
+                
+                <a href="#" id="libraryLink" class="link">
+                    <i class="fas fa-photo-film"></i> 
+                    לצפייה בבנק הפרזנטציות
+                </a>
+            </div>
+            
+            <div class="loader" id="loader"></div>
+        </div>
+        
+        <div id="successMessage" class="content-box success-message">
+            <div class="icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>תודה!</h2>
+            <p>הסרטון עלה בהצלחה.</p>
+            <p>תועברו לבנק הפרזנטציות בעוד <span id="countdown">3</span> שניות...</p>
+        </div>
+        
+        <div id="librarySection" class="content-box" style="display: none;">
+            <h2>בנק הפרזנטציות</h2>
+            <p>כאן תוכלו לצפות בכל הסרטונים שהועלו למערכת.</p>
+            
+            <div class="loader" id="libraryLoader"></div>
+            
+            <div class="file-library" id="fileLibrary">
+                <!-- Files will be loaded here -->
+            </div>
+            
+            <a href="#" id="backToUpload" class="link" style="margin-top: 2rem;">
+                <i class="fas fa-arrow-right"></i> 
+                חזרה להעלאת סרטון
+            </a>
+        </div>
+    </div>
+    
+    <div class="preview-modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">צפייה בסרטון</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Preview content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCe24QH6BXEWtF2zJWcP8WhV8qKj-3l-00",
+            authDomain: "gaash-2ea82.firebaseapp.com",
+            projectId: "gaash-2ea82",
+            storageBucket: "gaash-2ea82.firebasestorage.app",
+            messagingSenderId: "1054252503536",
+            appId: "1:1054252503536:web:4b7c546bd737de696e4d35"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+        
+        // DOM Elements
+        const uploadSection = document.getElementById('uploadSection');
+        const librarySection = document.getElementById('librarySection');
+        const successMessage = document.getElementById('successMessage');
+        const fileInput = document.getElementById('adFile');
+        const fileName = document.getElementById('fileName');
+        const groupNameInput = document.getElementById('groupName');
+        const submitBtn = document.getElementById('submitBtn');
+        const loader = document.getElementById('loader');
+        const libraryLoader = document.getElementById('libraryLoader');
+        const fileLibrary = document.getElementById('fileLibrary');
+        const libraryLink = document.getElementById('libraryLink');
+        const backToUpload = document.getElementById('backToUpload');
+        const countdown = document.getElementById('countdown');
+        const fileInputBox = document.getElementById('fileInputBox');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const previewModal = document.getElementById('previewModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+        
+        // Create sparkling animations
+        function createSparkles() {
+            const sparklesContainer = document.getElementById('sparkles');
+            
+            setInterval(() => {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                
+                // Random position
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                
+                // Random size
+                const size = Math.random() * 6 + 1;
+                
+                // Random translation
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+                
+                // Random duration
+                const duration = Math.random() * 3 + 2;
+                
+                sparkle.style.left = `${posX}px`;
+                sparkle.style.top = `${posY}px`;
+                sparkle.style.width = `${size}px`;
+                sparkle.style.height = `${size}px`;
+                sparkle.style.setProperty('--tx', `${tx}px`);
+                sparkle.style.setProperty('--ty', `${ty}px`);
+                sparkle.style.animationDuration = `${duration}s`;
+                
+                sparklesContainer.appendChild(sparkle);
+                
+                // Remove sparkle after animation completes
+                setTimeout(() => {
+                    sparkle.remove();
+                }, duration * 1000);
+            }, 500);
+        }
+        
+        // Function to validate file
+        function validateFile(file) {
+            if (!file) {
+                return false;
+            }
+            
+            if (!file.type.startsWith('video/')) {
+                alert('יש להעלות סרטון וידאו בלבד');
+                return false;
+            }
+            
+            if (file.size > 30 * 1024 * 1024) { // 30MB max
+                alert('גודל הקובץ לא יכול לעלות על 30MB');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Function to validate form
+        function validateForm() {
+            const file = fileInput.files[0];
+            const groupName = groupNameInput.value.trim();
+            
+            if (!groupName || !validateFile(file)) {
+                submitBtn.disabled = true;
+                return false;
+            }
+            
+            submitBtn.disabled = false;
+            return true;
+        }
+        
+        // Function to upload file
+        function uploadFile() {
+            const file = fileInput.files[0];
+            const groupName = groupNameInput.value.trim();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Show loader
+            loader.style.display = 'block';
+            progressBar.style.display = 'block';
+            submitBtn.disabled = true;
+            
+            // Create file name with metadata
+            const fileExtension = file.name.split('.').pop();
+            const safeGroupName = groupName.replace(/[^\w\sא-ת]/gi, '');
+            const timestamp = Date.now();
+            const newFileName = `${safeGroupName}_${timestamp}.${fileExtension}`;
+            
+            // Create metadata object
+            const metadata = {
+                customMetadata: {
+                    'groupName': groupName,
+                    'uploadTime': new Date().toISOString()
+                }
+            };
+            
+            // Create a storage reference in the correct folder
+            const storageRef = ref(storage, 'book/' + newFileName);
+            
+            // Upload file with metadata
+            const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+            
+            // Monitor upload progress
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    // Update progress bar
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    progressFill.style.width = progress + '%';
+                }, 
+                (error) => {
+                    // Error handling
+                    loader.style.display = 'none';
+                    progressBar.style.display = 'none';
+                    submitBtn.disabled = false;
+                    alert('שגיאה בהעלאת הקובץ. אנא נסו שנית.');
+                    console.error(error);
+                }, 
+                () => {
+                    // Upload completed successfully
+                    loader.style.display = 'none';
+                    progressBar.style.display = 'none';
+                    uploadSection.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Start countdown
+                    let count = 3;
+                    const countdownInterval = setInterval(() => {
+                        count--;
+                        countdown.textContent = count;
+                        
+                        if (count <= 0) {
+                            clearInterval(countdownInterval);
+                            showLibrary();
+                        }
+                    }, 1000);
+                }
+            );
+        }
+        
+        // Function to load files from storage
+        function loadFiles() {
+            libraryLoader.style.display = 'block';
+            fileLibrary.innerHTML = '';
+            
+            const storageRef = ref(storage, 'book/');
+            
+            listAll(storageRef)
+                .then((res) => {
+                    if (res.items.length === 0) {
+                        fileLibrary.innerHTML = '<div class="empty-message">אין סרטונים להצגה כרגע.</div>';
+                        libraryLoader.style.display = 'none';
+                        return;
+                    }
+                    
+                    let loadedCount = 0;
+                    let totalItems = res.items.length;
+                    
+                    res.items.forEach((itemRef) => {
+                        getDownloadURL(itemRef)
+                            .then(url => {
+                                // Extract filename parts
+                                const fullName = itemRef.name;
+                                const nameParts = fullName.split('_');
+                                let groupName = 'לא צוין';
+                                
+                                // If filename follows our naming convention
+                                if (nameParts.length >= 1) {
+                                    groupName = nameParts[0];
+                                }
+                                
+                                return { 
+                                    url, 
+                                    name: fullName,
+                                    groupName
+                                };
+                            })
+                            .then(fileData => {
+                                // Create file card
+                                const fileCard = document.createElement('div');
+                                fileCard.className = 'file-card';
+                                
+                                fileCard.innerHTML = `
+                                    <div class="file-card-header">
+                                        <p>${fileData.groupName}</p>
+                                    </div>
+                                    <div class="file-card-body">
+                                        <div class="file-card-icon">
+                                            <i class="fas fa-video"></i>
+                                        </div>
+                                        <h3 class="file-card-title">סרטון פרזנטציה</h3>
+                                        <p class="file-card-type">וידאו</p>
+                                    </div>
+                                `;
+                                
+                                fileCard.addEventListener('click', () => {
+                                    openPreviewModal(fileData);
+                                });
+                                
+                                fileLibrary.appendChild(fileCard);
+                                
+                                loadedCount++;
+                                if (loadedCount === totalItems) {
+                                    libraryLoader.style.display = 'none';
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error creating file card:", error);
+                                loadedCount++;
+                                if (loadedCount === totalItems) {
+                                    libraryLoader.style.display = 'none';
+                                }
+                            });
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error listing files:", error);
+                    fileLibrary.innerHTML = '<div class="empty-message">שגיאה בטעינת הסרטונים. אנא רעננו את הדף.</div>';
+                    libraryLoader.style.display = 'none';
+                });
+        }
+        
+        // Function to open preview modal
+        function openPreviewModal(fileData) {
+            modalTitle.textContent = `סרטון פרזנטציה - ${fileData.groupName}`;
+            modalBody.innerHTML = '';
+            
+            modalBody.innerHTML = `
+                <video class="preview-video" controls autoplay>
+                    <source src="${fileData.url}" type="video/mp4">
+                    הדפדפן שלך אינו תומך בהצגת וידאו.
+                </video>
+                <p>קבוצה: ${fileData.groupName}</p>
+            `;
+            
+            previewModal.style.display = 'flex';
+        }
+        
+        // Function to close preview modal
+        function closePreviewModal() {
+            previewModal.style.display = 'none';
+            modalBody.innerHTML = '';
+        }
+        
+        // Function to show library section
+        function showLibrary() {
+            uploadSection.style.display = 'none';
+            successMessage.style.display = 'none';
+            librarySection.style.display = 'block';
+            loadFiles();
+        }
+        
+        // Function to show upload section
+        function showUpload() {
+            librarySection.style.display = 'none';
+            successMessage.style.display = 'none';
+            uploadSection.style.display = 'block';
+            
+            // Reset form
+            groupNameInput.value = '';
+            fileInput.value = '';
+            fileName.textContent = '';
+            submitBtn.disabled = true;
+            progressBar.style.display = 'none';
+            progressFill.style.width = '0%';
+        }
+        
+        // Event: File input change
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            
+            if (validateFile(file)) {
+                fileName.textContent = file.name;
+                fileInputBox.style.borderColor = '#4CAF50';
+                validateForm();
+            } else {
+                fileName.textContent = '';
+                fileInputBox.style.borderColor = '';
+                fileInput.value = '';
+                submitBtn.disabled = true;
+            }
+        });
+        
+        // Event: Input field changes
+        groupNameInput.addEventListener('input', validateForm);
+        
+        // Event: Submit button click
+        submitBtn.addEventListener('click', uploadFile);
+        
+        // Event: Library link click
+        libraryLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLibrary();
+        });
+        
+        // Event: Back to upload link click
+        backToUpload.addEventListener('click', (e) => {
+            e.preventDefault();
+            showUpload();
+        });
+        
+        // Event: Close modal button click
+        closeModal.addEventListener('click', closePreviewModal);
+        
+        // Event: Close modal when clicking outside
+        previewModal.addEventListener('click', (e) => {
+            if (e.target === previewModal) {
+                closePreviewModal();
+            }
+        });
+        
+        // Event: Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && previewModal.style.display === 'flex') {
+                closePreviewModal();
+            }
+        });
+        
+        // Initialize page
+        createSparkles();
+    </script>
+</body>
+</html>
